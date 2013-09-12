@@ -1,5 +1,5 @@
+# encoding: utf-8
 # load the c extension
-require 'konto_check_raw'
 
 module KontoCheck
 
@@ -15,8 +15,8 @@ module KontoCheck
 
   class << self
 
-# die Funktionalität von lut_info() aus KontoCheckRaw ist auf drei Funktionen verteilt:
-# lut_info() gibt die Infos zum geladenen Datensatz zurück, die Funktionen
+# die FunktionalitÃ¤t von lut_info() aus KontoCheckRaw ist auf drei Funktionen verteilt:
+# lut_info() gibt die Infos zum geladenen Datensatz zurÃ¼ck, die Funktionen
 # lut_info1(<filename>) und lut_info2(<filename>) die Infos zum ersten bzw.
 # zweiten Datensatz der Datei <filename>. Alle drei Funktionen liefern nur den Klartext.
 
@@ -130,7 +130,7 @@ module KontoCheck
       KontoCheckRaw::bank_nr(*args).first
     end
 
-# Mammutfunktion, die alle Infos über eine Bank zurückliefert
+# Mammutfunktion, die alle Infos Ã¼ber eine Bank zurÃ¼ckliefert
     def bank_alles(*args)
       KontoCheckRaw::bank_alles(*args)
     end

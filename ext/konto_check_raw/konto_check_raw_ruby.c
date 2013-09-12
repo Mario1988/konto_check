@@ -73,7 +73,7 @@ static void get_params_file(int argc,VALUE* argv,char *arg1s,int *arg1i,int *arg
    VALUE v1_rb,v2_rb,v3_rb;
 
    switch(opts){
-      case 1:  /* ein Dateiname, zwei Integer; alle optional (für lut_init) */
+      case 1:  /* ein Dateiname, zwei Integer; alle optional (fÃ¼r lut_init) */
          rb_scan_args(argc,argv,"03",&v1_rb,&v2_rb,&v3_rb);
          if(NIL_P(v2_rb))  /* Level */
             *arg1i=DEFAULT_INIT_LEVEL;
@@ -85,18 +85,18 @@ static void get_params_file(int argc,VALUE* argv,char *arg1s,int *arg1i,int *arg
             *arg2i=NUM2INT(v3_rb);
          break;
 
-      case 2:  /* ein Dateiname (für dump_lutfile) */
+      case 2:  /* ein Dateiname (fÃ¼r dump_lutfile) */
          rb_scan_args(argc,argv,"10",&v1_rb);
          break;
 
-      case 3:  /* ein optionaler Dateiname (für lut_info) */
+      case 3:  /* ein optionaler Dateiname (fÃ¼r lut_info) */
          rb_scan_args(argc,argv,"01",&v1_rb);
          break;
 
       default:
          break;
    }
-   if(NIL_P(v1_rb)){    /* Leerstring zurückgeben => Defaultwerte probieren */
+   if(NIL_P(v1_rb)){    /* Leerstring zurÃ¼ckgeben => Defaultwerte probieren */
       *arg1s=0;
    }
    else if(TYPE(v1_rb)==RUBY_T_STRING){
@@ -122,7 +122,7 @@ static void get_params_int(int argc,VALUE* argv,int *arg1,int *arg2)
 
    rb_scan_args(argc,argv,"11",&arg1_rb,&arg2_rb);
 
-         /* Falls als erster Parameter ein Array übergeben wird, wird der erste
+         /* Falls als erster Parameter ein Array Ã¼bergeben wird, wird der erste
           * Wert werden als Minimal- und der zweite als Maximalwert genommen.
           */
    if(TYPE(arg1_rb)==RUBY_T_ARRAY){
@@ -178,11 +178,11 @@ static void get_params(int argc,VALUE* argv,char *arg1s,char *arg2s,int *argi,in
    VALUE arg1_rb,arg2_rb;
 
    switch(optargs){
-      case 0:  /* ein notwendiger Parameter (für lut_filialen) */
+      case 0:  /* ein notwendiger Parameter (fÃ¼r lut_filialen) */
          rb_scan_args(argc,argv,"10",&arg1_rb);
          break;
 
-      case 1:  /* ein notwendiger, ein optionaler Parameter (für viele lut-Funktionen) */
+      case 1:  /* ein notwendiger, ein optionaler Parameter (fÃ¼r viele lut-Funktionen) */
          rb_scan_args(argc,argv,"11",&arg1_rb,&arg2_rb);
          if(NIL_P(arg2_rb))   /* Filiale; Hauptstelle ist 0 */
             *argi=0;
@@ -190,16 +190,16 @@ static void get_params(int argc,VALUE* argv,char *arg1s,char *arg2s,int *argi,in
             *argi=NUM2INT(arg2_rb);
          break;
 
-      case 2:  /* zwei notwendige Parameter (für konto_check) */
+      case 2:  /* zwei notwendige Parameter (fÃ¼r konto_check) */
          rb_scan_args(argc,argv,"20",&arg1_rb,&arg2_rb);
          break;
 
-      case 3:  /* ein notwendiger Parameter (für iban_check) */
+      case 3:  /* ein notwendiger Parameter (fÃ¼r iban_check) */
          rb_scan_args(argc,argv,"10",&arg1_rb);
          maxlen=128;
          break;
 
-      case 4:  /* ein notwendiger Parameter (für ipi_gen) */
+      case 4:  /* ein notwendiger Parameter (fÃ¼r ipi_gen) */
          rb_scan_args(argc,argv,"10",&arg1_rb);
          maxlen=24;
          break;
@@ -217,8 +217,8 @@ static void get_params(int argc,VALUE* argv,char *arg1s,char *arg2s,int *argi,in
       case RUBY_T_FLOAT:
       case RUBY_T_FIXNUM:
       case RUBY_T_BIGNUM:
-            /* Zahlwerte werden zunächst nach double umgewandelt, da der
-             * Zahlenbereich von 32 Bit Integers nicht groß genug ist für
+            /* Zahlwerte werden zunÃ¤chst nach double umgewandelt, da der
+             * Zahlenbereich von 32 Bit Integers nicht groÃŸ genug ist fÃ¼r
              * z.B. Kontonummern (10 Stellen). Mit snprintf wird dann eine
              * Stringversion erzeugt - nicht schnell aber einfach :-).
              */
@@ -231,7 +231,7 @@ static void get_params(int argc,VALUE* argv,char *arg1s,char *arg2s,int *argi,in
             rb_raise(rb_eRuntimeError, "%s", "Unable to convert given value.");
          break;
    }
-   if(optargs==2)switch(TYPE(arg2_rb)){  /* für konto_check(): kto holen */
+   if(optargs==2)switch(TYPE(arg2_rb)){  /* fÃ¼r konto_check(): kto holen */
       case RUBY_T_STRING:
          strncpy(arg2s,RSTRING_PTR(arg2_rb),15);
          if((len=RSTRING_LEN(arg2_rb))>15)len=15;
@@ -257,19 +257,19 @@ static void get_params(int argc,VALUE* argv,char *arg1s,char *arg2s,int *argi,in
  * possible return values (and short description):
  *
  *    LUT2_NOT_INITIALIZED    "die Programmbibliothek wurde noch nicht initialisiert"
- *    MISSING_PARAMETER       "Bei der Kontoprüfung fehlt ein notwendiger Parameter (BLZ oder Konto)"
+ *    MISSING_PARAMETER       "Bei der KontoprÃ¼fung fehlt ein notwendiger Parameter (BLZ oder Konto)"
  *    
  *    NOT_IMPLEMENTED         "die Methode wurde noch nicht implementiert"
  *    UNDEFINED_SUBMETHOD     "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ             "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ_LENGTH      "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_KTO             "das Konto ist ungültig"
- *    INVALID_KTO_LENGTH      "ein Konto muß zwischen 1 und 10 Stellen haben"
+ *    INVALID_KTO             "das Konto ist ungÃ¼ltig"
+ *    INVALID_KTO_LENGTH      "ein Konto muÃŸ zwischen 1 und 10 Stellen haben"
  *    FALSE                   "falsch"
  *    NOT_DEFINED             "die Methode ist nicht definiert"
- *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hält es für richtig)"
+ *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hÃ¤lt es fÃ¼r richtig)"
  *    OK                      "ok"
- *    OK_NO_CHK               "ok, ohne Prüfung"
+ *    OK_NO_CHK               "ok, ohne PrÃ¼fung"
  */
 static VALUE konto_check(int argc,VALUE* argv,VALUE self)
 {
@@ -290,19 +290,19 @@ static VALUE konto_check(int argc,VALUE* argv,VALUE self)
  * possible return values (and short description):
  *
  *    LUT2_NOT_INITIALIZED    "die Programmbibliothek wurde noch nicht initialisiert"
- *    MISSING_PARAMETER       "Bei der Kontoprüfung fehlt ein notwendiger Parameter (BLZ oder Konto)"
+ *    MISSING_PARAMETER       "Bei der KontoprÃ¼fung fehlt ein notwendiger Parameter (BLZ oder Konto)"
  *    
  *    NOT_IMPLEMENTED         "die Methode wurde noch nicht implementiert"
  *    UNDEFINED_SUBMETHOD     "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ             "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ_LENGTH      "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_KTO             "das Konto ist ungültig"
- *    INVALID_KTO_LENGTH      "ein Konto muß zwischen 1 und 10 Stellen haben"
+ *    INVALID_KTO             "das Konto ist ungÃ¼ltig"
+ *    INVALID_KTO_LENGTH      "ein Konto muÃŸ zwischen 1 und 10 Stellen haben"
  *    FALSE                   "falsch"
  *    NOT_DEFINED             "die Methode ist nicht definiert"
- *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hält es für richtig)"
+ *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hÃ¤lt es fÃ¼r richtig)"
  *    OK                      "ok"
- *    OK_NO_CHK               "ok, ohne Prüfung"
+ *    OK_NO_CHK               "ok, ohne PrÃ¼fung"
  */
 static VALUE konto_check_pz(int argc,VALUE* argv,VALUE self)
 {
@@ -338,13 +338,13 @@ static VALUE konto_check_pz(int argc,VALUE* argv,VALUE self)
  *
  *    FILE_READ_ERROR         "kann Datei nicht lesen"
  *    NO_LUT_FILE             "die blz.lut Datei wurde nicht gefunden"
- *    INCREMENTAL_INIT_NEEDS_INFO            "Ein inkrementelles Initialisieren benötigt einen Info-Block in der LUT-Datei"
- *    INCREMENTAL_INIT_FROM_DIFFERENT_FILE   "Ein inkrementelles Initialisieren mit einer anderen LUT-Datei ist nicht möglich"
+ *    INCREMENTAL_INIT_NEEDS_INFO            "Ein inkrementelles Initialisieren benÃ¶tigt einen Info-Block in der LUT-Datei"
+ *    INCREMENTAL_INIT_FROM_DIFFERENT_FILE   "Ein inkrementelles Initialisieren mit einer anderen LUT-Datei ist nicht mÃ¶glich"
  *    LUT2_BLOCK_NOT_IN_FILE  "Der Block ist nicht in der LUT-Datei enthalten"
  *    INIT_FATAL_ERROR        "Initialisierung fehlgeschlagen (init_wait geblockt)"
  *    ERROR_MALLOC            "kann keinen Speicher allokieren"
- *    INVALID_LUT_FILE        "die blz.lut Datei ist inkosistent/ungültig"
- *    LUT_CRC_ERROR           "Prüfsummenfehler in der blz.lut Datei"
+ *    INVALID_LUT_FILE        "die blz.lut Datei ist inkosistent/ungÃ¼ltig"
+ *    LUT_CRC_ERROR           "PrÃ¼fsummenfehler in der blz.lut Datei"
  *    LUT2_DECOMPRESS_ERROR   "Fehler beim Dekomprimieren eines LUT-Blocks"
  *    LUT2_FILE_CORRUPTED     "Die LUT-Datei ist korrumpiert"
  *    LUT2_Z_DATA_ERROR       "Datenfehler im komprimierten LUT-Block"
@@ -393,13 +393,13 @@ static VALUE free_rb(VALUE self)
  *    ERROR_MALLOC               "kann keinen Speicher allokieren"
  *    FILE_READ_ERROR            "kann Datei nicht lesen"
  *    FILE_WRITE_ERROR           "kann Datei nicht schreiben"
- *    INVALID_BLZ_FILE           "Fehler in der blz.txt Datei (falsche Zeilenlänge)"
- *    INVALID_LUT_FILE           "die blz.lut Datei ist inkosistent/ungültig"
+ *    INVALID_BLZ_FILE           "Fehler in der blz.txt Datei (falsche ZeilenlÃ¤nge)"
+ *    INVALID_LUT_FILE           "die blz.lut Datei ist inkosistent/ungÃ¼ltig"
  *    KTO_CHECK_UNSUPPORTED_COMPRESSION "die notwendige Kompressions-Bibliothek wurden beim Kompilieren nicht eingebunden"
  *    LUT2_COMPRESS_ERROR        "Fehler beim Komprimieren eines LUT-Blocks"
  *    LUT2_FILE_CORRUPTED        "Die LUT-Datei ist korrumpiert"
- *    LUT2_GUELTIGKEIT_SWAPPED   "Im Gültigkeitsdatum sind Anfangs- und Enddatum vertauscht"
- *    LUT2_INVALID_GUELTIGKEIT   "Das angegebene Gültigkeitsdatum ist ungültig (Soll: JJJJMMTT-JJJJMMTT)"
+ *    LUT2_GUELTIGKEIT_SWAPPED   "Im GÃ¼ltigkeitsdatum sind Anfangs- und Enddatum vertauscht"
+ *    LUT2_INVALID_GUELTIGKEIT   "Das angegebene GÃ¼ltigkeitsdatum ist ungÃ¼ltig (Soll: JJJJMMTT-JJJJMMTT)"
  *    LUT2_NO_SLOT_FREE          "Im Inhaltsverzeichnis der LUT-Datei ist kein Slot mehr frei"
  *
  *    LUT1_FILE_GENERATED        "ok; es wurde allerdings eine LUT-Datei im alten Format (1.0/1.1) generiert"
@@ -534,7 +534,7 @@ static VALUE dump_lutfile_rb(int argc,VALUE* argv,VALUE self)
       dump=Qnil;
    else
       dump=rb_str_new2(ptr);
-   kc_free(ptr);  /* die C-Funktion allokiert Speicher, der muß wieder freigegeben werden */
+   kc_free(ptr);  /* die C-Funktion allokiert Speicher, der muÃŸ wieder freigegeben werden */
    return rb_ary_new3(2,dump,INT2FIX(retval));
 }
 
@@ -547,7 +547,7 @@ static VALUE dump_lutfile_rb(int argc,VALUE* argv,VALUE self)
  *
  *    ERROR_MALLOC           "kann keinen Speicher allokieren"
  *    FILE_READ_ERROR        "kann Datei nicht lesen"
- *    INVALID_LUT_FILE       "die blz.lut Datei ist inkosistent/ungültig"
+ *    INVALID_LUT_FILE       "die blz.lut Datei ist inkosistent/ungÃ¼ltig"
  *    KTO_CHECK_UNSUPPORTED_COMPRESSION "die notwendige Kompressions-Bibliothek wurden beim Kompilieren nicht eingebunden"
  *    LUT1_FILE_USED         "Es wurde eine LUT-Datei im Format 1.0/1.1 geladen"
  *    LUT2_BLOCK_NOT_IN_FILE "Der Block ist nicht in der LUT-Datei enthalten"
@@ -556,7 +556,7 @@ static VALUE dump_lutfile_rb(int argc,VALUE* argv,VALUE self)
  *    LUT2_Z_BUF_ERROR       "Buffer error in den ZLIB Routinen"
  *    LUT2_Z_DATA_ERROR      "Datenfehler im komprimierten LUT-Block"
  *    LUT2_Z_MEM_ERROR       "Memory error in den ZLIB-Routinen"
- *    LUT_CRC_ERROR          "Prüfsummenfehler in der blz.lut Datei"
+ *    LUT_CRC_ERROR          "PrÃ¼fsummenfehler in der blz.lut Datei"
  *    OK                     "ok"
  *
  */
@@ -576,7 +576,7 @@ static VALUE lut_info_rb(int argc,VALUE* argv,VALUE self)
       info2_rb=Qnil;
    else
       info2_rb=rb_str_new2(info2);
-   kc_free(info1);  /* die C-Funktion allokiert Speicher, der muß wieder freigegeben werden */
+   kc_free(info1);  /* die C-Funktion allokiert Speicher, der muÃŸ wieder freigegeben werden */
    kc_free(info2);
    if(retval<0)RUNTIME_ERROR(retval);
    return rb_ary_new3(5,INT2FIX(retval),INT2FIX(valid1),INT2FIX(valid2),info1_rb,info2_rb);
@@ -624,7 +624,7 @@ static VALUE load_bank_data(VALUE self, VALUE path_rb) {
  *    LUT2_BIC_NOT_INITIALIZED   "Das Feld BIC wurde nicht initialisiert"
  *    LUT2_NOT_INITIALIZED       "die Programmbibliothek wurde noch nicht initialisiert"
  *    INVALID_BLZ_LENGTH         "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                         "ok"
  */
 static VALUE iban2bic_rb(int argc,VALUE* argv,VALUE self)
@@ -645,26 +645,26 @@ static VALUE iban2bic_rb(int argc,VALUE* argv,VALUE self)
  *
  * possible return values for retval (and short description):
  *
- *    NO_GERMAN_BIC              "Ein Konto kann kann nur für deutsche Banken geprüft werden"
- *    IBAN_OK_KTO_NOT            "Die Prüfziffer der IBAN stimmt, die der Kontonummer nicht"
- *    KTO_OK_IBAN_NOT            "Die Prüfziffer der Kontonummer stimmt, die der IBAN nicht"
+ *    NO_GERMAN_BIC              "Ein Konto kann kann nur fÃ¼r deutsche Banken geprÃ¼ft werden"
+ *    IBAN_OK_KTO_NOT            "Die PrÃ¼fziffer der IBAN stimmt, die der Kontonummer nicht"
+ *    KTO_OK_IBAN_NOT            "Die PrÃ¼fziffer der Kontonummer stimmt, die der IBAN nicht"
  *    FALSE                      "falsch"
  *    OK                         "ok"
  *
  * possible return values for retval_kc:
  *    LUT2_NOT_INITIALIZED    "die Programmbibliothek wurde noch nicht initialisiert"
- *    MISSING_PARAMETER       "Bei der Kontoprüfung fehlt ein notwendiger Parameter (BLZ oder Konto)"
+ *    MISSING_PARAMETER       "Bei der KontoprÃ¼fung fehlt ein notwendiger Parameter (BLZ oder Konto)"
  *    NOT_IMPLEMENTED         "die Methode wurde noch nicht implementiert"
  *    UNDEFINED_SUBMETHOD     "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ             "Die (Unter)Methode ist nicht definiert"
  *    INVALID_BLZ_LENGTH      "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_KTO             "das Konto ist ungültig"
- *    INVALID_KTO_LENGTH      "ein Konto muß zwischen 1 und 10 Stellen haben"
+ *    INVALID_KTO             "das Konto ist ungÃ¼ltig"
+ *    INVALID_KTO_LENGTH      "ein Konto muÃŸ zwischen 1 und 10 Stellen haben"
  *    FALSE                   "falsch"
  *    NOT_DEFINED             "die Methode ist nicht definiert"
- *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hält es für richtig)"
+ *    BAV_FALSE               "BAV denkt, das Konto ist falsch (konto_check hÃ¤lt es fÃ¼r richtig)"
  *    OK                      "ok"
- *    OK_NO_CHK               "ok, ohne Prüfung"
+ *    OK_NO_CHK               "ok, ohne PrÃ¼fung"
  */
 static VALUE iban_check_rb(int argc,VALUE* argv,VALUE self)
 {
@@ -683,8 +683,8 @@ static VALUE iban_check_rb(int argc,VALUE* argv,VALUE self)
  *
  * possible return values for retval (and short description):
  *
- *    IPI_INVALID_LENGTH         "Die Länge des IPI-Verwendungszwecks darf maximal 18 Byte sein"
- *    IPI_INVALID_CHARACTER      "Im strukturierten Verwendungszweck dürfen nur alphanumerische Zeichen vorkommen"
+ *    IPI_INVALID_LENGTH         "Die LÃ¤nge des IPI-Verwendungszwecks darf maximal 18 Byte sein"
+ *    IPI_INVALID_CHARACTER      "Im strukturierten Verwendungszweck dÃ¼rfen nur alphanumerische Zeichen vorkommen"
  *    OK                         "ok"
  */
 static VALUE ipi_gen_rb(int argc,VALUE* argv,VALUE self)
@@ -704,7 +704,7 @@ static VALUE ipi_gen_rb(int argc,VALUE* argv,VALUE self)
  *
  * possible return values for retval (and short description):
  *
- *    IPI_CHECK_INVALID_LENGTH   "Der zu validierende strukturierete Verwendungszweck muß genau 20 Zeichen enthalten"
+ *    IPI_CHECK_INVALID_LENGTH   "Der zu validierende strukturierete Verwendungszweck muÃŸ genau 20 Zeichen enthalten"
  *    FALSE                      "falsch"
  *    OK                         "ok"
  */
@@ -723,10 +723,10 @@ static VALUE ipi_check_rb(int argc,VALUE* argv,VALUE self)
  *
  * possible return values (and short description):
  *
- *    LUT2_INDEX_OUT_OF_RANGE    "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE    "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    LUT2_BLZ_NOT_INITIALIZED   "Das Feld BLZ wurde nicht initialisiert"
  *    INVALID_BLZ_LENGTH         "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                         "ok"
  */
 static VALUE bank_valid(int argc,VALUE* argv,VALUE self)
@@ -749,9 +749,9 @@ static VALUE bank_valid(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_FILIALEN_NOT_INITIALIZED "Das Feld Filialen wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_filialen(int argc,VALUE* argv,VALUE self)
@@ -774,7 +774,7 @@ static VALUE bank_filialen(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_NOT_INITIALIZED       "die Programmbibliothek wurde noch nicht initialisiert"
  *    INVALID_BLZ_LENGTH         "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                "die Bankleitzahl ist ungÃ¼ltig"
  *    LUT2_PARTIAL_OK            "es wurden nicht alle Blocks geladen"
  *    OK                         "ok"
  */
@@ -788,9 +788,9 @@ static VALUE bank_alles(int argc,VALUE* argv,VALUE self)
    retval=lut_multiple(blz,&cnt,&p_blz, &p_name,&p_name_kurz,&p_plz,&p_ort,&p_pan,&p_bic,&p_pz,&p_nr,
          &p_aenderung,&p_loeschung,&p_nachfolge_blz,NULL,NULL,NULL);
    if(retval==LUT2_BLZ_NOT_INITIALIZED)RUNTIME_ERROR(retval);
-   if(filiale<0 || (cnt && filiale>=cnt))return(INT2FIX(LUT2_INDEX_OUT_OF_RANGE));  /* ungültige Filiale */
+   if(filiale<0 || (cnt && filiale>=cnt))return(INT2FIX(LUT2_INDEX_OUT_OF_RANGE));  /* ungÃ¼ltige Filiale */
 
-      /* Fehler, die C-Arrays dürfen nicht dereferenziert werden */
+      /* Fehler, die C-Arrays dÃ¼rfen nicht dereferenziert werden */
    if(retval<=0 && retval!=LUT2_PARTIAL_OK)return rb_ary_new3(2,INT2FIX(retval),Qnil);
 
    *aenderung=p_aenderung[filiale];
@@ -814,9 +814,9 @@ static VALUE bank_alles(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_NAME_NOT_INITIALIZED     "Das Feld Bankname wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_name(int argc,VALUE* argv,VALUE self)
@@ -839,9 +839,9 @@ static VALUE bank_name(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_NAME_KURZ_NOT_INITIALIZED "Das Feld Kurzname wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_name_kurz(int argc,VALUE* argv,VALUE self)
@@ -864,9 +864,9 @@ static VALUE bank_name_kurz(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_ORT_NOT_INITIALIZED      "Das Feld Ort wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_ort(int argc,VALUE* argv,VALUE self)
@@ -889,9 +889,9 @@ static VALUE bank_ort(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_PLZ_NOT_INITIALIZED      "Das Feld PLZ wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_plz(int argc,VALUE* argv,VALUE self)
@@ -913,10 +913,10 @@ static VALUE bank_plz(int argc,VALUE* argv,VALUE self)
  * possible return values (and short description):
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
- *    LUT2_PZ_NOT_INITIALIZED       "Das Feld Prüfziffer wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_PZ_NOT_INITIALIZED       "Das Feld PrÃ¼fziffer wurde nicht initialisiert"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_pz(int argc,VALUE* argv,VALUE self)
@@ -939,9 +939,9 @@ static VALUE bank_pz(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_BIC_NOT_INITIALIZED      "Das Feld BIC wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_bic(int argc,VALUE* argv,VALUE self)
@@ -958,16 +958,16 @@ static VALUE bank_bic(int argc,VALUE* argv,VALUE self)
 /**
  * KontoCheck::bank_aenderung(<blz> [,filiale])
  *
- * return the 'Änderung' flag of a bank (as string):
+ * return the 'Ã„nderung' flag of a bank (as string):
  *    A Addition, M Modified, U Unchanged, D Deletion.
  *
  * possible return values (and short description):
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
- *    LUT2_AENDERUNG_NOT_INITIALIZED "Das Feld Änderung wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_AENDERUNG_NOT_INITIALIZED "Das Feld Ã„nderung wurde nicht initialisiert"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_aenderung(int argc,VALUE* argv,VALUE self)
@@ -985,15 +985,15 @@ static VALUE bank_aenderung(int argc,VALUE* argv,VALUE self)
 /**
  * KontoCheck::bank_loeschung(<blz> [,filiale])
  *
- * return the 'Löschung' flag of a bank as int: 0 or 1
+ * return the 'LÃ¶schung' flag of a bank as int: 0 or 1
  *
  * possible return values (and short description):
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
- *    LUT2_LOESCHUNG_NOT_INITIALIZED "Das Feld Löschung wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_LOESCHUNG_NOT_INITIALIZED "Das Feld LÃ¶schung wurde nicht initialisiert"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_loeschung(int argc,VALUE* argv,VALUE self)
@@ -1010,15 +1010,15 @@ static VALUE bank_loeschung(int argc,VALUE* argv,VALUE self)
 /**
  * KontoCheck::bank_nachfolge_blz(<blz> [,filiale])
  *
- * return the successor of a bank which will be deleted ('Löschung' flag set)
+ * return the successor of a bank which will be deleted ('LÃ¶schung' flag set)
  *
  * possible return values (and short description):
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_NACHFOLGE_BLZ_NOT_INITIALIZED "Das Feld Nachfolge-BLZ wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_nachfolge_blz(int argc,VALUE* argv,VALUE self)
@@ -1041,9 +1041,9 @@ static VALUE bank_nachfolge_blz(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_PAN_NOT_INITIALIZED      "Das Feld PAN wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_pan(int argc,VALUE* argv,VALUE self)
@@ -1066,9 +1066,9 @@ static VALUE bank_pan(int argc,VALUE* argv,VALUE self)
  *
  *    LUT2_BLZ_NOT_INITIALIZED      "Das Feld BLZ wurde nicht initialisiert"
  *    LUT2_NR_NOT_INITIALIZED       "Das Feld NR wurde nicht initialisiert"
- *    LUT2_INDEX_OUT_OF_RANGE       "Der Index für die Filiale ist ungültig"
+ *    LUT2_INDEX_OUT_OF_RANGE       "Der Index fÃ¼r die Filiale ist ungÃ¼ltig"
  *    INVALID_BLZ_LENGTH            "die Bankleitzahl ist nicht achtstellig"
- *    INVALID_BLZ                   "die Bankleitzahl ist ungültig"
+ *    INVALID_BLZ                   "die Bankleitzahl ist ungÃ¼ltig"
  *    OK                            "ok"
  */
 static VALUE bank_nr(int argc,VALUE* argv,VALUE self)
@@ -1084,37 +1084,37 @@ static VALUE bank_nr(int argc,VALUE* argv,VALUE self)
 
 /**
  * Die Suchroutinen der C-Bibliothek sind eher Low-Level Routinen und ohne
- * einen Blick in die Sourcen nicht intuitiv nutzbar ;-), daher hier zunächst
- * eine kurze Einführung.
+ * einen Blick in die Sourcen nicht intuitiv nutzbar ;-), daher hier zunÃ¤chst
+ * eine kurze EinfÃ¼hrung.
  *
- * Beim ersten Aufruf einer dieser Routinen wird zunächst getestet, ob das
+ * Beim ersten Aufruf einer dieser Routinen wird zunÃ¤chst getestet, ob das
  * Array mit den Zweigstellen bereits erstellt wurde. Dieses Array
- * korrespondiert mit der Tabelle der Bankleitzahlen; es enthält zu jedem Index
+ * korrespondiert mit der Tabelle der Bankleitzahlen; es enthÃ¤lt zu jedem Index
  * die jeweilige Zweigstellennummer, wobei Hauptstellen den Wert 0 erhalten.
  * Das erste Element in diesem Array entspricht der Bundesbank.
  *
  * Als zweites wird getestet, ob das Array mit den sortierten Werten schon
  * vorhanden ist; falls nicht, wird Speicher allokiert, der entsprechende Block
- * sortiert und die Indizes in das Array eingetragen (es wäre zu testen, ob die
+ * sortiert und die Indizes in das Array eingetragen (es wÃ¤re zu testen, ob die
  * Initialisierung schneller ist, wenn man das Array in der LUT-Datei
  * speichert).
  *
- * Um einen bestimmten Wert zu finden, wird eine binäre Suche durchgeführt.
- * Wird das gesuchte Element gefunden, werden die folgenden Werte zurückgegeben:
+ * Um einen bestimmten Wert zu finden, wird eine binÃ¤re Suche durchgefÃ¼hrt.
+ * Wird das gesuchte Element gefunden, werden die folgenden Werte zurÃ¼ckgegeben:
  *
  *    - anzahl:      Anzahl der gefundenen Werte, die den Suchkriterien entsprechen
  *
- *    - start_idx:   Pointer auf den ersten Wert im Sortierarray. Die nächsten
+ *    - start_idx:   Pointer auf den ersten Wert im Sortierarray. Die nÃ¤chsten
  *                   <anzahl> Elemente ab diesem Element entsprechen den
  *                   Sortierkriterien. Die Werte geben dabei den Index innerhalb
- *                   der BLZ-Datei an, beginnend mit 0 für die Bundesbank.
+ *                   der BLZ-Datei an, beginnend mit 0 fÃ¼r die Bundesbank.
  *
- *    - zweigstelle: Dieses Array enthält die Zweigstellennummern der
+ *    - zweigstelle: Dieses Array enthÃ¤lt die Zweigstellennummern der
  *                   jeweiligen Banken. Es umfasst jedoch den Gesamtbestand der
  *                   BLZ-Datei, nicht den des Sortierarrays.
  *
  *    - base_name:   Dies ist ein Array das die Werte der Suchfunktion (in der
- *                   Reihenfolge der BLZ-Datei) enthält.
+ *                   Reihenfolge der BLZ-Datei) enthÃ¤lt.
  *
  *    - blz_base:    Dies ist das Array mit den Bankleitzahlen.
  *
@@ -1123,7 +1123,7 @@ static VALUE bank_nr(int argc,VALUE* argv,VALUE self)
  * retval=lut_suche_ort("aa",&anzahl,&start_idx,&zweigstelle,&base_name,&blz_base);
  *
  * liefert das folgende Ergebnis (mit der LUT-Datei vom 7.3.2011; bei anderen LUT-Dateien
- * können sich die Indizes natürlich verschieben):
+ * kÃ¶nnen sich die Indizes natÃ¼rlich verschieben):
  *
  *    anzahl: 38
  *    i:  0, start_idx[ 0]:  9259, blz_base[ 9259]: 58550130, zweigstelle[ 9259]: 42, base_name[ 9259]: Aach b Trier
@@ -1151,17 +1151,17 @@ static VALUE bank_nr(int argc,VALUE* argv,VALUE self)
  *    i: 22, start_idx[22]:  6333, blz_base[ 6333]: 50120383, zweigstelle[ 6333]:  1, base_name[ 6333]: Aachen
  *    i: 23, start_idx[23]: 10348, blz_base[10348]: 60420000, zweigstelle[10348]: 18, base_name[10348]: Aachen
  *    i: 24, start_idx[24]: 16183, blz_base[16183]: 76026000, zweigstelle[16183]:  1, base_name[16183]: Aachen
- *    i: 25, start_idx[25]: 10001, blz_base[10001]: 60069673, zweigstelle[10001]:  1, base_name[10001]: Aalen, Württ
- *    i: 26, start_idx[26]: 10685, blz_base[10685]: 61370024, zweigstelle[10685]:  1, base_name[10685]: Aalen, Württ
- *    i: 27, start_idx[27]: 10695, blz_base[10695]: 61370086, zweigstelle[10695]:  3, base_name[10695]: Aalen, Württ
- *    i: 28, start_idx[28]: 10714, blz_base[10714]: 61420086, zweigstelle[10714]:  0, base_name[10714]: Aalen, Württ
- *    i: 29, start_idx[29]: 10715, blz_base[10715]: 61430000, zweigstelle[10715]:  0, base_name[10715]: Aalen, Württ
- *    i: 30, start_idx[30]: 10716, blz_base[10716]: 61440086, zweigstelle[10716]:  0, base_name[10716]: Aalen, Württ
- *    i: 31, start_idx[31]: 10717, blz_base[10717]: 61450050, zweigstelle[10717]:  0, base_name[10717]: Aalen, Württ
- *    i: 32, start_idx[32]: 10755, blz_base[10755]: 61450191, zweigstelle[10755]:  0, base_name[10755]: Aalen, Württ
- *    i: 33, start_idx[33]: 10756, blz_base[10756]: 61480001, zweigstelle[10756]:  0, base_name[10756]: Aalen, Württ
- *    i: 34, start_idx[34]: 10757, blz_base[10757]: 61490150, zweigstelle[10757]:  0, base_name[10757]: Aalen, Württ
- *    i: 35, start_idx[35]: 10766, blz_base[10766]: 61490150, zweigstelle[10766]:  9, base_name[10766]: Aalen, Württ
+ *    i: 25, start_idx[25]: 10001, blz_base[10001]: 60069673, zweigstelle[10001]:  1, base_name[10001]: Aalen, WÃ¼rtt
+ *    i: 26, start_idx[26]: 10685, blz_base[10685]: 61370024, zweigstelle[10685]:  1, base_name[10685]: Aalen, WÃ¼rtt
+ *    i: 27, start_idx[27]: 10695, blz_base[10695]: 61370086, zweigstelle[10695]:  3, base_name[10695]: Aalen, WÃ¼rtt
+ *    i: 28, start_idx[28]: 10714, blz_base[10714]: 61420086, zweigstelle[10714]:  0, base_name[10714]: Aalen, WÃ¼rtt
+ *    i: 29, start_idx[29]: 10715, blz_base[10715]: 61430000, zweigstelle[10715]:  0, base_name[10715]: Aalen, WÃ¼rtt
+ *    i: 30, start_idx[30]: 10716, blz_base[10716]: 61440086, zweigstelle[10716]:  0, base_name[10716]: Aalen, WÃ¼rtt
+ *    i: 31, start_idx[31]: 10717, blz_base[10717]: 61450050, zweigstelle[10717]:  0, base_name[10717]: Aalen, WÃ¼rtt
+ *    i: 32, start_idx[32]: 10755, blz_base[10755]: 61450191, zweigstelle[10755]:  0, base_name[10755]: Aalen, WÃ¼rtt
+ *    i: 33, start_idx[33]: 10756, blz_base[10756]: 61480001, zweigstelle[10756]:  0, base_name[10756]: Aalen, WÃ¼rtt
+ *    i: 34, start_idx[34]: 10757, blz_base[10757]: 61490150, zweigstelle[10757]:  0, base_name[10757]: Aalen, WÃ¼rtt
+ *    i: 35, start_idx[35]: 10766, blz_base[10766]: 61490150, zweigstelle[10766]:  9, base_name[10766]: Aalen, WÃ¼rtt
  *    i: 36, start_idx[36]:  7002, blz_base[ 7002]: 51050015, zweigstelle[ 7002]: 69, base_name[ 7002]: Aarbergen
  *    i: 37, start_idx[37]:  7055, blz_base[ 7055]: 51091700, zweigstelle[ 7055]:  2, base_name[ 7055]: Aarbergen
  * 
@@ -1430,7 +1430,7 @@ void Init_konto_check_raw()
        * Anzahl Parameter; die genaue Anzahl wird bei der Funktion rb_scan_args()
        * als 3. Parameter angegeben.
        *
-       * Bei -1 erfolgt die Übergabe als C-Array, bei -2 ist die Übergabe als
+       * Bei -1 erfolgt die Ãœbergabe als C-Array, bei -2 ist die Ãœbergabe als
        * Ruby-Array (s. http://karottenreibe.github.com/2009/10/28/ruby-c-extension-5/):
        *
        *    A positive number means, your function will take just that many
@@ -1452,8 +1452,8 @@ void Init_konto_check_raw()
        *    arguments (so -1 means all arguments are optional, -2 means one
        *    mandatory argument followed by optional arguments, and so on).
        *
-       * Es wäre zu testen, ob dieses Verhalten bei älteren Versionen gilt;
-       * dann müßte man u.U. eine entsprechende Verzweigung einbauen. Bei den
+       * Es wÃ¤re zu testen, ob dieses Verhalten bei Ã¤lteren Versionen gilt;
+       * dann mÃ¼ÃŸte man u.U. eine entsprechende Verzweigung einbauen. Bei den
        * aktuellen Varianten (Ruby 1.8.6 und 1.9.2) funktioniert diese Variante.
        */
    rb_define_module_function(KontoCheck,"init",init,-1);
@@ -1494,7 +1494,7 @@ void Init_konto_check_raw()
    rb_define_module_function(KontoCheck,"bank_suche_pz",bank_suche_pz,-1);
    rb_define_module_function(KontoCheck,"load_bank_data",load_bank_data,1);
 
-      /* Rückgabewerte der konto_check Bibliothek */
+      /* RÃ¼ckgabewerte der konto_check Bibliothek */
    rb_define_const(KontoCheck,"KTO_CHECK_UNSUPPORTED_COMPRESSION",INT2FIX(KTO_CHECK_UNSUPPORTED_COMPRESSION));
    rb_define_const(KontoCheck,"KTO_CHECK_INVALID_COMPRESSION_LIB",INT2FIX(KTO_CHECK_INVALID_COMPRESSION_LIB));
    rb_define_const(KontoCheck,"OK_UNTERKONTO_ATTACHED",INT2FIX(OK_UNTERKONTO_ATTACHED));

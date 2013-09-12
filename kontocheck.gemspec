@@ -30,8 +30,10 @@ Gem::Specification.new do |s|
     "ext/konto_check_raw/konto_check_raw_ruby.c",
     "init.rb",
     "kontocheck.gemspec",
-    "lib/konto_check.rb",
     "lib/kontocheck.rb",
+    "lib/kontocheck/kontocheck.rb",
+    "lib/kontocheck/iban_check.rb",
+    "lib/kontocheck/iban_replacement_rules.rb",
     "test/helper.rb",
     "test/test_konto_check.rb"
   ]

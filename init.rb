@@ -1,1 +1,2 @@
-require 'konto_check'
+#require 'iban_check'
+#require 'konto_check'

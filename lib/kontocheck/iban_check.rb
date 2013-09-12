@@ -1,6 +1,6 @@
-require 'konto_check'
-require 'iban_replacement_rules'
-class Iban
+require 'konto_check/kontocheck'
+require 'konto_check/iban_replacement_rules'
+class IbanCheck
   IBAN_REG_EXP = /\A[A-Z]{2}\d{20}\Z/i
   BANK_IDENTIFICATION_REG_EXP = /\A\d{8}\Z/i
   ACCOUNT_NUMBER_REG_EXP = /\A\d{10}\Z/i
@@ -21,7 +21,7 @@ class Iban
     iban[12..21]
   end
 
-  def construct_iban(country = "DE", bank_identification, account_number)
+  def self.construct_iban(country = "DE", bank_identification, account_number)
     account_number = adding_leading_zero(account_number)
     raise 'This is not a valid country' unless COUNTRY_REG_EXP.match(country)
     raise 'This is not a valid bank identification' unless BANK_IDENTIFICATION_REG_EXP.match(bank_identification)
@@ -29,7 +29,7 @@ class Iban
     raise 'This is not a valid account' if !KontoCheck.konto_check?(bank_identification, account_number) && !IbanReplacementRules.skip_account_check?
     bank_identification, account_number = IbanReplacementRules(bank_identification, account_number)
     checksum = checksum(country + "00" + bank_identification + account_number) && skip_account_check?(bank_identification, account_number)
-    checknumber = 98 (checksum % 97)
+    checknumber = 98 - (checksum % 97)
     if checknumber < 10
       checknumber = "0" + checknumber.to_s 
     else
